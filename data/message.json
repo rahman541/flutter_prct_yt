@@ -1,0 +1,22 @@
+[
+    {
+        "subject": "My first message",
+        "body": "Okkkk asjnajn aksnkjs nasndsk. Here we take the value from the MyHomePage object that was created by. the App.build method, and use it to set our appbar title."
+    },
+    {
+        "subject": "My second message",
+        "body": "Okkkk asjnajn aksnkjs nasndsk"
+    },
+    {
+        "subject": "You won lottery",
+        "body": "Another text which is very very long so everyone can read it see it."
+    },
+    {
+        "subject": "You should read this message",
+        "body": "Okkkk asjnajn aksnkjs nasndsk"
+    },
+    {
+        "subject": "You won lottery again",
+        "body": "Okkkk asjnajn aksnkjs nasndsk"
+    }
+]
