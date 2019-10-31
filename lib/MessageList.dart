@@ -17,26 +17,13 @@ class MessageList extends StatefulWidget {
 }
 
 class _MessageList extends State<MessageList> {
-  List<Message> messages = const[];
-
-  Future loadMessageList() async {
-    // String content = await rootBundle.loadString('data/message.json');
-    http.Response response = await http.get('http://www.mocky.io/v2/5dbb06fe300000560e02940b');
-    String content = response.body;
-
-    List collection = json.decode(content);
-    List<Message> _messages = collection.map((json)=>Message.fromJson(json)).toList();
-
-    setState((){
-      messages = _messages;
-    });
-    print(content);
-  }
+  Future<List<Message>> messages;
 
   @override
   void initState() {
     super.initState();
-    loadMessageList();
+    // loadMessageList();
+    messages = Message.browse();
   }
 
 
@@ -47,25 +34,47 @@ class _MessageList extends State<MessageList> {
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
+        actions: <Widget>[
+          IconButton(icon: Icon(Icons.refresh), onPressed: (){
+            var _messages = Message.browse();
+            setState(() {
+             messages = _messages; 
+            });
+          }),
+        ],
       ),
-      body: ListView.separated(
-        separatorBuilder: (ctx, i) => Divider(),
-        itemCount: messages.length,
-        itemBuilder: (BuildContext context, int index) {
-          Message message = messages[index];
+      body: FutureBuilder(
+        future: messages,
+        builder: (BuildContext ctx, AsyncSnapshot snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+            case ConnectionState.waiting:
+            case ConnectionState.active:
+              return Center(child: CircularProgressIndicator(),);
+            case ConnectionState.done:
+            if (snapshot.hasError) return Text('There was an error: ${snapshot.error}');
+              var messages = snapshot.data;
+              return ListView.separated(
+                separatorBuilder: (ctx, i) => Divider(),
+                itemCount: messages.length,
+                itemBuilder: (BuildContext context, int index) {
+                  Message message = messages[index];
 
-          return ListTile(
-            title: Text(message.subject),
-            isThreeLine: true,
-            leading: CircleAvatar(
-              child: Text('PJ'),
-            ),
-            subtitle: Text(
-              message.body,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-          );
+                  return ListTile(
+                    title: Text(message.subject),
+                    isThreeLine: true,
+                    leading: CircleAvatar(
+                      child: Text('PJ'),
+                    ),
+                    subtitle: Text(
+                      message.body,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  );
+                },
+              );
+          }
         },
       ),
     );
