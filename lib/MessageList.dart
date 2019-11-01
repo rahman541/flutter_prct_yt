@@ -1,8 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter_prct_yt/MessageCompose.dart';
+import 'package:flutter_prct_yt/MessageDetail.dart';
 
 import 'Message.dart';
 
@@ -71,10 +69,19 @@ class _MessageList extends State<MessageList> {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
+                    onTap: () {
+                      Navigator.push(ctx, MaterialPageRoute(builder: (ctx) => MessageDetail()));
+                    },
                   );
                 },
               );
           }
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (ctx) => MessageCompose()));
         },
       ),
     );
