@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_prct_yt/ContactListBuilder.dart';
 
 import 'ContactManager.dart';
+import 'Overseer.dart';
 import 'Provider.dart';
 import 'model/Contact.dart';
 
@@ -34,7 +35,7 @@ class ContactSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    ContactManager manager = Provider.of<ContactManager>(context);
+    ContactManager manager = Provider.of(context).fetch(ContactManager);
     if (query.length < 3) {
       return Center(
         child: Text('Type at least 3 letter to search.'),
@@ -42,6 +43,7 @@ class ContactSearchDelegate extends SearchDelegate {
     }
 
     return ContactListBuilder(
+      stream: manager.filteredCollection(query: query),
       builder: (context, contacts) {
         return ListView.separated(
           itemCount: contacts?.length ?? 0,

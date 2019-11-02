@@ -2,13 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_prct_yt/AppDrawer.dart';
 import 'package:flutter_prct_yt/ContactCounter.dart';
 import 'package:flutter_prct_yt/ContactListBuilder.dart';
+import 'package:flutter_prct_yt/ContactManager.dart';
 import 'package:flutter_prct_yt/ContactSearchDelegate.dart';
 
+import 'Overseer.dart';
+import 'Provider.dart';
 import 'model/Contact.dart';
 
 class ContactsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    ContactManager manager = Provider.of(context).fetch(ContactManager);
     return DefaultTabController(
       child: Scaffold(
         appBar: AppBar(
@@ -29,6 +33,7 @@ class ContactsScreen extends StatelessWidget {
         ),
         drawer: AppDrawer(),
         body: ContactListBuilder(
+          stream: manager.contactListView,
           builder: (context, contacts) {
             return ListView.separated(
               itemCount: contacts?.length ?? 0,

@@ -23,9 +23,9 @@ class _AppState extends State<App> {
         ].elementAt(_selectedIndex),
         bottomNavigationBar: BottomNavigationBar(
           items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(title: Text('Inbox'), icon: Icon(FontAwesomeIcons.mailBulk)),
-            BottomNavigationBarItem(title: Text('People'), icon: Icon(FontAwesomeIcons.peopleCarry)),
-            BottomNavigationBarItem(title: Text('Calendar'), icon: Icon(FontAwesomeIcons.calendar)),
+            BottomNavigationBarItem(title: Text('Inbox'), icon: Icon(FontAwesomeIcons.envelope)),
+            BottomNavigationBarItem(title: Text('People'), icon: Icon(FontAwesomeIcons.idCard)),
+            BottomNavigationBarItem(title: Text('Calendar'), icon: Icon(FontAwesomeIcons.calendarAlt)),
           ],
           onTap: _onBarItemTap,
           currentIndex: _selectedIndex,
