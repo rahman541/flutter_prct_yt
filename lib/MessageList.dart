@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_prct_yt/ComposeButton.dart';
 import 'package:flutter_prct_yt/MessageCompose.dart';
 import 'package:flutter_prct_yt/MessageDetail.dart';
 
@@ -33,7 +34,7 @@ class _MessageList extends State<MessageList> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.refresh), onPressed: (){
+          IconButton(icon: Icon(Icons.refresh), onPressed: () {
             var _messages = Message.browse();
             setState(() {
              messages = _messages; 
@@ -70,7 +71,9 @@ class _MessageList extends State<MessageList> {
                       overflow: TextOverflow.ellipsis,
                     ),
                     onTap: () {
-                      Navigator.push(ctx, MaterialPageRoute(builder: (ctx) => MessageDetail()));
+                      Navigator.push(ctx, MaterialPageRoute(
+                        builder: (ctx) => MessageDetail(message.subject, message.body)
+                      ));
                     },
                   );
                 },
@@ -78,12 +81,7 @@ class _MessageList extends State<MessageList> {
           }
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (ctx) => MessageCompose()));
-        },
-      ),
+      floatingActionButton: ComposeButton(),
     );
   }
 }
