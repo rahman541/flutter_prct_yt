@@ -5,16 +5,25 @@ import 'package:flutter_prct_yt/service/ContactService.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ContactManager {
-  final BehaviorSubject<int> _contactCount = BehaviorSubject<int>();
+  final PublishSubject<String> _filterSubject = PublishSubject<String>();
+  final BehaviorSubject<int> _countSubject = BehaviorSubject<int>();
+  final PublishSubject<List<Contact>> _collectionSubject = PublishSubject();
 
-  Stream<int> get count$ => _contactCount.stream;
-  Stream<List<Contact>> browse$({filter}) => Stream.fromFuture(ContactService.browse(query: filter));
+  Sink<String> get inFilter => _filterSubject.sink;
+
+  Stream<int> get count$ => _countSubject.stream;
+  Stream<List<Contact>> get browse$ => _collectionSubject.stream;
 
   ContactManager() {
-    browse$().listen((list) => _contactCount.add(list.length));
+    _filterSubject.stream.listen((filter) async {
+      var contacts = await ContactService.browse(query: filter);
+      _collectionSubject.add(contacts);
+    });
+    _collectionSubject.listen((list) => _countSubject.add(list.length));
   }
 
   void dispose() {
-    _contactCount.close();
+    _countSubject.close();
+    _filterSubject.close();
   }
 }
