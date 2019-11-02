@@ -10,7 +10,7 @@ class EmailApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blueGrey, accentColor: Colors.red
+        primarySwatch: Colors.indigo, accentColor: Colors.red
       ),
       // home: MessageList(title: 'Flutter Demo Home Page'),
       home: App(),
