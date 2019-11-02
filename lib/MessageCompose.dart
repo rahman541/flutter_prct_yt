@@ -24,6 +24,7 @@ class _MessageComposeState extends State<MessageCompose> {
             children: <Widget>[
               ListTile(
                 title: TextFormField(
+                  validator: (val) => !val.contains('@') ? '`TO` field must be email':null,
                   onSaved: (value) => to = value,
                   decoration: InputDecoration(
                     labelText: 'TO',
@@ -34,6 +35,14 @@ class _MessageComposeState extends State<MessageCompose> {
               ),
               ListTile(
                 title: TextFormField(
+                  validator: (val) {
+                    int len = val.length;
+                    if (len == 0) return '`SUBJECT` cannot be empty.';
+                    else if (len < 4) {
+                      return '`SUBJECT` mus be longer than 4 character';
+                    }
+                    return null;
+                  },
                   onSaved: (value) => subject = value,
                   decoration: InputDecoration(
                     labelText: 'SUBJECT',
@@ -57,9 +66,11 @@ class _MessageComposeState extends State<MessageCompose> {
                 title: RaisedButton(
                   child: Text('Send'),
                   onPressed: () {
-                    this.key.currentState.save();
-                    Message message = Message(subject, body);
-                    Navigator.pop(context, message);
+                    if (this.key.currentState.validate()) {
+                      this.key.currentState.save();
+                      Message message = Message(subject, body);
+                      Navigator.pop(context, message);
+                    }
                   },
                 ),
               ),
