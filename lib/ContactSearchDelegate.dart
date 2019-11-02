@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_prct_yt/ContactListBuilder.dart';
 
 import 'ContactManager.dart';
-import 'Overseer.dart';
 import 'Provider.dart';
 import 'model/Contact.dart';
 
@@ -43,7 +42,7 @@ class ContactSearchDelegate extends SearchDelegate {
     }
 
     return ContactListBuilder(
-      stream: manager.filteredCollection(query: query),
+      stream: manager.browse$(filter: query),
       builder: (context, contacts) {
         return ListView.separated(
           itemCount: contacts?.length ?? 0,

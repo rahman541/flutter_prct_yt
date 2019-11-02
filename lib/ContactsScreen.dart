@@ -5,7 +5,6 @@ import 'package:flutter_prct_yt/ContactListBuilder.dart';
 import 'package:flutter_prct_yt/ContactManager.dart';
 import 'package:flutter_prct_yt/ContactSearchDelegate.dart';
 
-import 'Overseer.dart';
 import 'Provider.dart';
 import 'model/Contact.dart';
 
@@ -33,7 +32,7 @@ class ContactsScreen extends StatelessWidget {
         ),
         drawer: AppDrawer(),
         body: ContactListBuilder(
-          stream: manager.contactListView,
+          stream: manager.browse$(),
           builder: (context, contacts) {
             return ListView.separated(
               itemCount: contacts?.length ?? 0,
