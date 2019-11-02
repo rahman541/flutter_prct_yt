@@ -16,15 +16,21 @@ class MessageList extends StatefulWidget {
 }
 
 class _MessageList extends State<MessageList> {
-  Future<List<Message>> messages;
+  Future<List<Message>> future;
+  List<Message> messages;
 
   @override
   void initState() {
     super.initState();
     // loadMessageList();
-    messages = Message.browse();
+    // messages = Message.browse();
+    fetch();
   }
 
+  void fetch() async {
+    future = Message.browse();
+    messages = await future;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +40,8 @@ class _MessageList extends State<MessageList> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.refresh), onPressed: () {
-            var _messages = Message.browse();
+          IconButton(icon: Icon(Icons.refresh), onPressed: () async {
+            var _messages = await Message.browse();
             setState(() {
              messages = _messages; 
             });
@@ -43,7 +49,7 @@ class _MessageList extends State<MessageList> {
         ],
       ),
       body: FutureBuilder(
-        future: messages,
+        future: future,
         builder: (BuildContext ctx, AsyncSnapshot snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.none:
@@ -52,36 +58,36 @@ class _MessageList extends State<MessageList> {
               return Center(child: CircularProgressIndicator(),);
             case ConnectionState.done:
             if (snapshot.hasError) return Text('There was an error: ${snapshot.error}');
-              var messages = snapshot.data;
-              return ListView.separated(
-                separatorBuilder: (ctx, i) => Divider(),
-                itemCount: messages.length,
-                itemBuilder: (BuildContext context, int index) {
-                  Message message = messages[index];
+            var messages = snapshot.data;
+            return ListView.separated(
+              separatorBuilder: (ctx, i) => Divider(),
+              itemCount: messages.length,
+              itemBuilder: (BuildContext context, int index) {
+                Message message = messages[index];
 
-                  return ListTile(
-                    title: Text(message.subject),
-                    isThreeLine: true,
-                    leading: CircleAvatar(
-                      child: Text('PJ'),
-                    ),
-                    subtitle: Text(
-                      message.body,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    onTap: () {
-                      Navigator.push(ctx, MaterialPageRoute(
-                        builder: (ctx) => MessageDetail(message.subject, message.body)
-                      ));
-                    },
-                  );
-                },
-              );
+                return ListTile(
+                  title: Text(message.subject),
+                  isThreeLine: true,
+                  leading: CircleAvatar(
+                    child: Text('PJ'),
+                  ),
+                  subtitle: Text(
+                    message.body,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  onTap: () {
+                    Navigator.push(ctx, MaterialPageRoute(
+                      builder: (ctx) => MessageDetail(message.subject, message.body)
+                    ));
+                  },
+                );
+              },
+            );
           }
         },
       ),
-      floatingActionButton: ComposeButton(),
+      floatingActionButton: ComposeButton(messages),
     );
   }
 }
