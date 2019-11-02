@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_prct_yt/ComposeButton.dart';
 import 'package:flutter_prct_yt/MessageCompose.dart';
 import 'package:flutter_prct_yt/MessageDetail.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -43,9 +44,8 @@ class _MessageList extends State<MessageList> {
         title: Text(widget.title),
         actions: <Widget>[
           IconButton(icon: Icon(Icons.refresh), onPressed: () async {
-            var _messages = await Message.browse();
             setState(() {
-             messages = _messages; 
+              future = Message.browse();
             });
           }),
         ],
@@ -127,22 +127,59 @@ class _MessageList extends State<MessageList> {
               itemBuilder: (BuildContext context, int index) {
                 Message message = messages[index];
 
-                return ListTile(
-                  title: Text(message.subject),
-                  isThreeLine: true,
-                  leading: CircleAvatar(
-                    child: Text('PJ'),
+                return Slidable(
+                  actionPane: SlidableDrawerActionPane(),
+                  actionExtentRatio: 0.25,
+                  child: ListTile(
+                    title: Text(message.subject),
+                    isThreeLine: true,
+                    leading: CircleAvatar(
+                      child: Text('PJ'),
+                    ),
+                    subtitle: Text(
+                      message.body,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    onTap: () {
+                      Navigator.push(ctx, MaterialPageRoute(
+                        builder: (ctx) => MessageDetail(message.subject, message.body)
+                      ));
+                    },
                   ),
-                  subtitle: Text(
-                    message.body,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  onTap: () {
-                    Navigator.push(ctx, MaterialPageRoute(
-                      builder: (ctx) => MessageDetail(message.subject, message.body)
-                    ));
-                  },
+                  actions: <Widget>[
+                    IconSlideAction(
+                      caption: 'Archive',
+                      color: Colors.blue,
+                      icon: Icons.archive,
+                      onTap: () => {},
+                    ),
+                    IconSlideAction(
+                      caption: 'Share',
+                      color: Colors.indigo,
+                      icon: Icons.share,
+                      onTap: () => {},
+                    ),
+                  ],
+                  secondaryActions: <Widget>[
+                    IconSlideAction(
+                      caption: 'More',
+                      color: Colors.black45,
+                      icon: Icons.more_horiz,
+                      onTap: () => {},
+                    ),
+                    IconSlideAction(
+                      caption: 'Delete',
+                      color: Colors.red,
+                      icon: Icons.delete,
+                      onTap: () {
+                        setState(() {
+                          messages.removeAt(index);
+                        });
+                      },
+                    ),
+                  ],
+                  key: ObjectKey(message),
                 );
               },
             );
