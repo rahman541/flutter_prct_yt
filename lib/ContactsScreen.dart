@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_prct_yt/AppDrawer.dart';
+import 'package:flutter_prct_yt/ContactCounter.dart';
 import 'package:flutter_prct_yt/ContactListBuilder.dart';
-import 'package:flutter_prct_yt/ContactManager.dart';
 import 'package:flutter_prct_yt/ContactSearchDelegate.dart';
 
 import 'model/Contact.dart';
 
 class ContactsScreen extends StatelessWidget {
-  ContactManager manager = ContactManager();
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -16,27 +14,13 @@ class ContactsScreen extends StatelessWidget {
         appBar: AppBar(
           title: Text('Contacts'),
           actions: <Widget>[
-            StreamBuilder<int>(
-              stream: manager.contactCount,
-              builder: (context, snapshot) {
-                return Chip(
-                  label: Text(
-                    (snapshot.data ?? 0).toString(),
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    )
-                  ),
-                  backgroundColor: Colors.red,
-                );
-              },
-            ),
+            ContactCounter(),
             IconButton(
               icon: Icon(Icons.search),
               onPressed: () {
                 showSearch(
                   context: context,
-                  delegate: ContactSearchDelegate(manager: manager),
+                  delegate: ContactSearchDelegate(),
                 );
               },
             ),
@@ -45,7 +29,6 @@ class ContactsScreen extends StatelessWidget {
         ),
         drawer: AppDrawer(),
         body: ContactListBuilder(
-          stream: manager.contactListView,
           builder: (context, contacts) {
             return ListView.separated(
               itemCount: contacts?.length ?? 0,
