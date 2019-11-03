@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter_prct_yt/model/Contact.dart';
 import 'package:flutter_prct_yt/service/ContactService.dart';
 import 'package:rxdart/rxdart.dart';
@@ -15,10 +13,13 @@ class ContactManager {
   Observable<List<Contact>> get browse$ => _collectionSubject.stream;
 
   ContactManager() {
-    _filterSubject.debounceTime(Duration(milliseconds: 500)).listen((filter) async {
-      var contacts = await ContactService.browse(query: filter);
-      _collectionSubject.add(contacts);
+    _filterSubject.debounceTime(Duration(milliseconds: 500))
+      .switchMap((filter) async* {
+        yield await ContactService.browse(filter: filter);
+      }).listen((contacts) async {
+        _collectionSubject.add(contacts);
     });
+    print(_filterSubject);
     _collectionSubject.listen((list) => _countSubject.add(list.length));
   }
 
