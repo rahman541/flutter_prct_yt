@@ -30,7 +30,7 @@ class _MessageComposeState extends State<MessageCompose> {
           child: Column(
             children: <Widget>[
               ListTile(
-                title: Observer(
+                title: Observer<String> (
                   stream: manager.email$,
                   onSuccess: (context, data) {
                     return TextField (
@@ -42,15 +42,15 @@ class _MessageComposeState extends State<MessageCompose> {
                         labelText: 'TO',
                         labelStyle: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      maxLines: 5,
                     );
                   },
                   onError: (context, error) {
                     return TextField (
+                      onChanged: manager.inEmail.add,
                       decoration: InputDecoration (
-                        labelText: 'TO (error)',
+                        labelText: 'TO',
                         labelStyle: TextStyle(fontWeight: FontWeight.bold),
-                        errorText: 'This field is invalid',
+                        errorText: error,
                       )
                     );
                   },

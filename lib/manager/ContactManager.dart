@@ -19,7 +19,6 @@ class ContactManager {
       }).listen((contacts) async {
         _collectionSubject.add(contacts);
     });
-    print(_filterSubject);
     _collectionSubject.listen((list) => _countSubject.add(list.length));
   }
 
