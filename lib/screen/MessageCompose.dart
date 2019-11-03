@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_prct_yt/Message.dart';
 import 'package:flutter_prct_yt/Provider.dart';
+import 'package:flutter_prct_yt/RxTextField.dart';
 import 'package:flutter_prct_yt/manager/MessageFormManager.dart';
-import 'package:rxdart/rxdart.dart';
-
-import '../Observer.dart';
 
 class MessageCompose extends StatefulWidget {
   @override
@@ -15,29 +13,24 @@ class _MessageComposeState extends State<MessageCompose> {
   @override
   Widget build(BuildContext context) {
     MessageFormManager manager = Provider.of(context).fetch(MessageFormManager);
+    // var [email$, setEmail] = manager.useEmail();
 
     return Scaffold(
-      appBar: AppBar(title: Text('Compose New Message')),
+      appBar: AppBar(
+        title: Text('Compose New Message')
+      ),
       body: SingleChildScrollView(
         child: Form(
           child: Column(
             children: <Widget>[
               ListTile(
-                title: StreamBuilder<String> (
-                  stream: manager.email$,
-                  builder: (context, snapshot) {
-                    return TextField (
-                      onChanged: manager.inEmail.add,
-                      // onChanged: (value) {
-                      //   manager.inEmail.add(value);
-                      // },
-                      decoration: InputDecoration (
-                        labelText: 'TO',
-                        labelStyle: TextStyle(fontWeight: FontWeight.bold),
-                        errorText: snapshot.error,
-                      ),
-                    );
-                  },
+                title: RxTextField(
+                  subscribe: manager.email$,
+                  dispatch: manager.setEmail,
+                  decoration: InputDecoration(
+                    labelText: 'TO',
+                    labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ),
               ),
               ListTile(

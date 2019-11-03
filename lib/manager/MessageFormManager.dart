@@ -8,7 +8,7 @@ import '../Validation.dart';
 class MessageFormManager with Validation {
   final _email = BehaviorSubject<String>();
   Stream<String> get email$ => _email.stream.transform(validateEmail);
-  Sink<String> get inEmail => _email.sink;
+  void setEmail(String value) => _email.sink.add(value);
 
   final _subject = BehaviorSubject<String>();
   Stream<String> get subject$ => _subject.stream.transform(validateSubject);

@@ -5,4 +5,4 @@
 ![Alt text](screenshot-3.png "Title")
 
 # Ref:
-https://www.youtube.com/playlist?list=PLhXZp00uXBk5TSY6YOdmpzp1yG3QbFvrN
+https://youtu.be/3BrXBN6TGLo?list=PLhXZp00uXBk5TSY6YOdmpzp1yG3QbFvrN&t=1294
