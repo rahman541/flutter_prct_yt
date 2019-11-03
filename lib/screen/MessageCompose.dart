@@ -12,12 +12,6 @@ class MessageCompose extends StatefulWidget {
 }
 
 class _MessageComposeState extends State<MessageCompose> {
-  String to ="";
-  String subject = "";
-  String body = "";
-
-  final key = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
     MessageFormManager manager = Provider.of(context).fetch(MessageFormManager);
@@ -26,13 +20,12 @@ class _MessageComposeState extends State<MessageCompose> {
       appBar: AppBar(title: Text('Compose New Message')),
       body: SingleChildScrollView(
         child: Form(
-          key: key,
           child: Column(
             children: <Widget>[
               ListTile(
-                title: Observer<String> (
+                title: StreamBuilder<String> (
                   stream: manager.email$,
-                  onSuccess: (context, data) {
+                  builder: (context, snapshot) {
                     return TextField (
                       onChanged: manager.inEmail.add,
                       // onChanged: (value) {
@@ -41,60 +34,52 @@ class _MessageComposeState extends State<MessageCompose> {
                       decoration: InputDecoration (
                         labelText: 'TO',
                         labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                        errorText: snapshot.error,
                       ),
-                    );
-                  },
-                  onError: (context, error) {
-                    return TextField (
-                      onChanged: manager.inEmail.add,
-                      decoration: InputDecoration (
-                        labelText: 'TO',
-                        labelStyle: TextStyle(fontWeight: FontWeight.bold),
-                        errorText: error,
-                      )
                     );
                   },
                 ),
               ),
               ListTile(
-                title: TextFormField(
-                  validator: (val) {
-                    int len = val.length;
-                    if (len == 0) return '`SUBJECT` cannot be empty.';
-                    else if (len < 4) {
-                      return '`SUBJECT` mus be longer than 4 character';
-                    }
-                    return null;
-                  },
-                  onSaved: (value) => subject = value,
-                  decoration: InputDecoration(
-                    labelText: 'SUBJECT',
-                    labelStyle: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  maxLines: 5,
+                title: StreamBuilder<Object>(
+                  stream: manager.subject$,
+                  builder: (context, snapshot) {
+                    return TextField(
+                      onChanged: manager.inSubject.add,
+                      decoration: InputDecoration(
+                        labelText: 'SUBJECT',
+                        labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                        errorText: snapshot.error,
+                      ),
+                    );
+                  }
                 ),
               ),
               Divider(),
               ListTile(
-                title: TextFormField(
-                  onSaved: (value) => body = value,
+                title: TextField(
+                  onChanged: manager.inBody.add,
                   decoration: InputDecoration(
                     labelText: 'BODY',
                     labelStyle: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  maxLines: 8,
+                  maxLines: 9,
                 ),
               ),
               ListTile(
-                title: RaisedButton(
-                  child: Text('Send'),
-                  onPressed: () {
-                    if (this.key.currentState.validate()) {
-                      this.key.currentState.save();
-                      Message message = Message(subject, body);
-                      Navigator.pop(context, message);
-                    }
-                  },
+                title: StreamBuilder<Object>(
+                  stream: manager.isFormValid$,
+                  builder: (context, snapshot) {
+                    return RaisedButton(
+                      child: Text('Send'),
+                      onPressed: () {
+                        if (snapshot.hasData) {
+                          Message message = manager.submit();
+                          Navigator.pop(context, message);
+                        }
+                      },
+                    );
+                  }
                 ),
               ),
             ]
