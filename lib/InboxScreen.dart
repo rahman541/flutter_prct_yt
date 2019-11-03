@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_prct_yt/AppDrawer.dart';
+import 'package:flutter_prct_yt/ComposeButton.dart';
 import 'MessageList.dart';
 
 class InboxScreen extends StatelessWidget {
@@ -18,10 +19,13 @@ class InboxScreen extends StatelessWidget {
         ]),
       ),
       drawer: AppDrawer(),
-      body: TabBarView(children: <Widget>[
-        MessageList(status: 'important'),
-        MessageList(status: 'other'),
-      ]),
+      body: TabBarView(
+        children: <Widget>[
+          MessageList(status: 'important'),
+          MessageList(status: 'other'),
+        ],
+      ),
+      floatingActionButton: ComposeButton([]),
     );
   }
 }
