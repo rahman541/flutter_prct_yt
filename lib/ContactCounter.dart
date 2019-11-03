@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_prct_yt/Observer.dart';
 
-import 'ContactManager.dart';
 import 'Provider.dart';
+import 'manager/ContactManager.dart';
 
 class ContactCounter extends StatelessWidget {
   @override

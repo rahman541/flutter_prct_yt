@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_prct_yt/FabButton.dart';
 
-import 'AppDrawer.dart';
-import 'Counter.dart';
+import '../AppDrawer.dart';
+import '../Counter.dart';
+
 
 class CalendarScreen extends StatelessWidget {
   @override

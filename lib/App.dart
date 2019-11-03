@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_prct_yt/CalendarScreen.dart';
-import 'package:flutter_prct_yt/ContactsScreen.dart';
 import 'package:flutter_prct_yt/InboxScreen.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import 'screen/CalendarScreen.dart';
+import 'screen/ContactsScreen.dart';
 
 class App extends StatefulWidget {
   @override

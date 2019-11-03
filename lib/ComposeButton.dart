@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'Message.dart';
-import 'MessageCompose.dart';
+import 'screen/MessageCompose.dart';
 
 class ComposeButton extends StatelessWidget {
   final List<Message> messages;

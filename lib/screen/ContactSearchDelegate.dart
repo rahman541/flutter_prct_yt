@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_prct_yt/ContactListBuilder.dart';
+import 'package:flutter_prct_yt/manager/ContactManager.dart';
+import 'package:flutter_prct_yt/model/Contact.dart';
 
-import 'ContactManager.dart';
-import 'Provider.dart';
-import 'model/Contact.dart';
+import '../Provider.dart';
 
 class ContactSearchDelegate extends SearchDelegate {
   final manager;

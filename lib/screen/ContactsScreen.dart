@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_prct_yt/AppDrawer.dart';
 import 'package:flutter_prct_yt/ContactCounter.dart';
 import 'package:flutter_prct_yt/ContactListBuilder.dart';
-import 'package:flutter_prct_yt/ContactManager.dart';
-import 'package:flutter_prct_yt/ContactSearchDelegate.dart';
+import 'package:flutter_prct_yt/manager/ContactManager.dart';
+import 'package:flutter_prct_yt/model/Contact.dart';
 
-import 'Provider.dart';
-import 'model/Contact.dart';
+import '../Provider.dart';
+import 'ContactSearchDelegate.dart';
 
 class ContactsScreen extends StatelessWidget {
   @override

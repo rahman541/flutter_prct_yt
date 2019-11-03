@@ -1,5 +1,6 @@
-import 'package:flutter_prct_yt/ContactManager.dart';
 import 'package:flutter_prct_yt/CounterManager.dart';
+
+import 'manager/ContactManager.dart';
 
 class Overseer {
   Map<dynamic, dynamic> repository = {};
