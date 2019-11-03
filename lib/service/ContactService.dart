@@ -8,16 +8,16 @@ class ContactService {
   static String _url = 'https://secure-garden-21188.herokuapp.com/contacts';
   
   static Future<List<Contact>> browse({query}) async {
-    http.Response response = await http.get(_url);
+    http.Response response = await http.get("$_url?q=$query");
     String content = response.body;
 
     List collection = json.decode(content);
 
     Iterable<Contact> _contacts = collection.map((_)=>Contact.fromJson(_));
 
-    if (query != null && query.isNotEmpty) {
-      _contacts = _contacts.where((contact) => contact.name.toLowerCase().contains(query));
-    }
+    // if (query != null && query.isNotEmpty) { // Filtering on server
+    //   _contacts = _contacts.where((contact) => contact.name.toLowerCase().contains(query));
+    // }
 
     return _contacts.toList();
   }
