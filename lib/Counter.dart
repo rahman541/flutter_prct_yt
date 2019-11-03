@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_prct_yt/CounterManager.dart';
 import 'package:flutter_prct_yt/Observer.dart';
 
 import 'Provider.dart';
+import 'manager/CounterManager.dart';
 
 class Counter extends StatelessWidget {
   @override

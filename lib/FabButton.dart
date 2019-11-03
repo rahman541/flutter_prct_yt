@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'CounterManager.dart';
 import 'Provider.dart';
+import 'manager/CounterManager.dart';
 
 class FabButton extends StatelessWidget {
   @override
