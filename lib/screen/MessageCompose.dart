@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_prct_yt/Message.dart';
+import 'package:flutter_prct_yt/Provider.dart';
+import 'package:flutter_prct_yt/manager/MessageFormManager.dart';
+import 'package:rxdart/rxdart.dart';
+
+import '../Observer.dart';
 
 class MessageCompose extends StatefulWidget {
   @override
@@ -15,6 +20,8 @@ class _MessageComposeState extends State<MessageCompose> {
 
   @override
   Widget build(BuildContext context) {
+    MessageFormManager manager = Provider.of(context).fetch(MessageFormManager);
+
     return Scaffold(
       appBar: AppBar(title: Text('Compose New Message')),
       body: SingleChildScrollView(
@@ -23,14 +30,30 @@ class _MessageComposeState extends State<MessageCompose> {
           child: Column(
             children: <Widget>[
               ListTile(
-                title: TextFormField(
-                  validator: (val) => !val.contains('@') ? '`TO` field must be email':null,
-                  onSaved: (value) => to = value,
-                  decoration: InputDecoration(
-                    labelText: 'TO',
-                    labelStyle: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  maxLines: 5,
+                title: Observer(
+                  stream: manager.email$,
+                  onSuccess: (context, data) {
+                    return TextField (
+                      onChanged: manager.inEmail.add,
+                      // onChanged: (value) {
+                      //   manager.inEmail.add(value);
+                      // },
+                      decoration: InputDecoration (
+                        labelText: 'TO',
+                        labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      maxLines: 5,
+                    );
+                  },
+                  onError: (context, error) {
+                    return TextField (
+                      decoration: InputDecoration (
+                        labelText: 'TO (error)',
+                        labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                        errorText: 'This field is invalid',
+                      )
+                    );
+                  },
                 ),
               ),
               ListTile(
